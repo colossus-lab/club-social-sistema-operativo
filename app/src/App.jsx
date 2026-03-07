@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Users, CreditCard, ShieldCheck, Sun, Moon, Trophy, CalendarDays } from 'lucide-react';
 import { useClubStore } from './store/useClubStore';
 import './App.css';
@@ -10,6 +10,14 @@ import Tesoreria from './pages/Tesoreria';
 import Disciplinas from './pages/Disciplinas';
 import Reservas from './pages/Reservas';
 import Landing from './pages/Landing';
+
+const navItems = [
+  { to: '/', icon: LayoutDashboard, label: 'Dashboard', exact: true },
+  { to: '/socios', icon: Users, label: 'Socios' },
+  { to: '/tesoreria', icon: CreditCard, label: 'Tesorería' },
+  { to: '/disciplinas', icon: Trophy, label: 'Deportes' },
+  { to: '/reservas', icon: CalendarDays, label: 'Reservas' },
+];
 
 function Sidebar() {
   const { clubInfo } = useClubStore();
@@ -25,26 +33,17 @@ function Sidebar() {
       </div>
 
       <nav className="flex-col gap-sm" style={{ flex: 1 }}>
-        <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-          <LayoutDashboard />
-          <span>Dashboard</span>
-        </NavLink>
-        <NavLink to="/socios" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-          <Users />
-          <span>Socios</span>
-        </NavLink>
-        <NavLink to="/tesoreria" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-          <CreditCard />
-          <span>Tesorería</span>
-        </NavLink>
-        <NavLink to="/disciplinas" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-          <Trophy />
-          <span>Disciplinas</span>
-        </NavLink>
-        <NavLink to="/reservas" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-          <CalendarDays />
-          <span>Agenda & Reservas</span>
-        </NavLink>
+        {navItems.map(({ to, icon: Icon, label, exact }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={exact}
+            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          >
+            <Icon />
+            <span>{label}</span>
+          </NavLink>
+        ))}
       </nav>
 
       <div className="glass-panel" style={{ padding: '1.25rem', marginTop: 'auto' }}>
@@ -65,10 +64,16 @@ function Sidebar() {
 
 function Topbar() {
   const { theme, toggleTheme } = useClubStore();
+  const location = useLocation();
+
+  const currentPage = navItems.find(item =>
+    item.exact ? location.pathname === item.to : location.pathname.startsWith(item.to)
+  );
 
   return (
     <header className="topbar">
-      <div className="flex items-center gap-md">
+      <span className="topbar-page-title">{currentPage?.label ?? 'Club Social OS'}</span>
+      <div className="topbar-actions">
         <button onClick={toggleTheme} className="icon-btn" title="Alternar Tema" style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}>
           {theme === 'dark-theme' ? <Sun size={20} className="text-warning" /> : <Moon size={20} className="text-accent-primary" />}
         </button>

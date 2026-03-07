@@ -77,27 +77,27 @@ export default function Socios() {
                 </div>
             </div>
 
-            <div className="glass-panel mb-8 p-6">
-                <div className="flex items-center gap-md">
-                    <div className="flex items-center" style={{ flex: 1, position: 'relative' }}>
-                        <Search size={20} className="text-muted" style={{ position: 'absolute', left: '1.5rem' }} />
+            <div className="glass-panel mb-8 p-4">
+                <div className="socios-search-bar">
+                    <div className="socios-search-input">
+                        <Search size={18} className="text-muted" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
                         <input
                             type="text"
                             placeholder="Buscar por nombre, DNI o número de asociado..."
                             className="input-glass"
-                            style={{ paddingLeft: '4rem', paddingRight: '1rem', height: '3.5rem', fontSize: '1.1rem' }}
+                            style={{ paddingLeft: '3rem', paddingRight: '1rem', height: '3rem', fontSize: '1rem', width: '100%' }}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <select className="input-glass" style={{ width: '220px', height: '3.5rem' }}>
+                    <select className="input-glass socios-search-select" style={{ height: '3rem' }}>
                         <option>Todas las categorías</option>
                         <option>Activo</option>
                         <option>Vitalicio</option>
                         <option>Cadete</option>
                         <option>Becado</option>
                     </select>
-                    <select className="input-glass" style={{ width: '220px', height: '3.5rem' }}>
+                    <select className="input-glass socios-search-select" style={{ height: '3rem' }}>
                         <option>Cualquier estado</option>
                         <option>Al día</option>
                         <option>Moroso</option>

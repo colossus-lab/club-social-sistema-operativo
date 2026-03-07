@@ -19,6 +19,7 @@
   padding: var(--spacing-lg);
   z-index: 10;
   transition: all var(--transition-normal);
+  flex-shrink: 0;
 }
 
 .sidebar-header {
@@ -68,6 +69,7 @@
 .nav-link svg {
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
 }
 
 /* Main Content Area */
@@ -77,14 +79,15 @@
   flex-direction: column;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
 }
 
 .topbar {
-  height: 80px;
+  height: 64px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0 var(--spacing-xl);
   background: transparent;
   backdrop-filter: blur(10px);
@@ -92,6 +95,22 @@
   top: 0;
   z-index: 5;
   border-bottom: 1px solid var(--glass-border);
+}
+
+.topbar-page-title {
+  display: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--text-primary), var(--text-muted));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .user-profile {
@@ -121,6 +140,8 @@
   justify-content: center;
   font-weight: bold;
   font-size: 0.8rem;
+  color: white;
+  flex-shrink: 0;
 }
 
 .page-container {
@@ -129,6 +150,7 @@
   margin: 0 auto;
   width: 100%;
   animation: fadeIn 0.4s ease-out;
+  box-sizing: border-box;
 }
 
 .page-header {
@@ -160,17 +182,21 @@
   animation: slideInFromRight 0.3s ease-out;
 }
 
-/* Mobile Optimizations */
+/* ============================================
+   MOBILE OPTIMIZATIONS (max-width: 768px)
+   ============================================ */
 @media (max-width: 768px) {
   .app-container {
     flex-direction: column;
   }
 
+  /* ---- Bottom Navigation Bar ---- */
   .sidebar {
     width: 100%;
-    height: 70px;
+    height: auto;
+    min-height: 60px;
     flex-direction: row;
-    padding: var(--spacing-xs);
+    padding: 0;
     border-right: none;
     border-top: 1px solid var(--glass-border);
     position: fixed;
@@ -179,17 +205,22 @@
     right: 0;
     z-index: 50;
     justify-content: space-around;
+    align-items: stretch;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   .sidebar-header {
     display: none;
   }
 
-  .sidebar nav.flex-col {
+  .sidebar>nav {
     flex-direction: row !important;
     width: 100%;
     justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
+    gap: 0;
+    flex: 1;
   }
 
   .sidebar .glass-panel {
@@ -198,42 +229,75 @@
 
   .nav-link {
     flex-direction: column;
-    padding: var(--spacing-xs);
-    gap: 0.25rem;
-    font-size: 0.65rem;
+    padding: 8px 4px 10px;
+    gap: 4px;
+    font-size: 10px;
     margin-bottom: 0;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0;
+    line-height: 1;
+    min-height: 60px;
+    touch-action: manipulation;
   }
 
   .nav-link svg {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
+    margin-bottom: 2px;
   }
 
+  /* Show labels on mobile */
   .nav-link span {
-    display: none;
-    /* Icon only for cleaner mobile view, or we can leave text */
+    display: block;
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .nav-link.active {
     background: transparent;
     color: var(--accent-primary);
     box-shadow: none;
+    border-top: 2px solid var(--accent-primary);
   }
 
+  /* ---- Main Content ---- */
   .main-content {
-    margin-bottom: 70px;
-    /* space for bottom nav */
+    height: 100vh;
+    margin-bottom: 0;
+    padding-bottom: 70px;
+    /* space for fixed bottom nav */
   }
 
+  /* ---- Topbar ---- */
   .topbar {
+    height: 56px;
     padding: 0 var(--spacing-md);
+    justify-content: space-between;
   }
 
+  .topbar-page-title {
+    display: block;
+  }
+
+  .topbar-actions .user-profile span {
+    display: none;
+    /* hide "Administrador" text, keep avatar */
+  }
+
+  /* ---- Page Container ---- */
   .page-container {
-    padding: var(--spacing-md);
+    padding: 1rem;
   }
 
   .page-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .page-header {
+    margin-bottom: 1.25rem;
   }
 }

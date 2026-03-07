@@ -791,8 +791,122 @@ textarea {
   }
 }
 
-/* Mobile Responsive Adjustments */
+/* ============================================
+   PAGE-SPECIFIC RESPONSIVE GRID CLASSES
+   ============================================ */
+
+/* Dashboard */
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.dashboard-charts-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.dashboard-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.dashboard-chart-area {
+  height: 320px;
+  width: 100%;
+}
+
+.dashboard-subtitle {
+  font-size: 1rem;
+}
+
+.stat-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.stat-value {
+  font-size: 1.875rem;
+}
+
+/* Tesorería */
+.tesoreria-top-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.tesoreria-chart-area {
+  height: 280px;
+  width: 100%;
+}
+
+.tesoreria-mid-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.tesoreria-form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+  align-items: end;
+}
+
+/* Reservas */
+.reservas-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.reservas-recursos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+/* Disciplinas */
+.disciplinas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+
+/* Socios */
+.socios-search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.socios-search-input {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+
+.socios-search-select {
+  min-width: 160px;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE ADJUSTMENTS (≤768px)
+   ============================================ */
 @media (max-width: 768px) {
+
+  /* Generic flex and grid overrides */
   .flex-col-mobile {
     flex-direction: column !important;
   }
@@ -806,36 +920,79 @@ textarea {
     grid-template-columns: 1fr !important;
   }
 
-  .col-span-1,
-  .col-span-2,
-  .col-span-3,
-  .col-span-4,
-  .md-\[col-span-4\] {
-    grid-column: span 1 !important;
+  /* Dashboard */
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 
-  .p-10 {
-    padding: var(--spacing-lg) !important;
+  .dashboard-charts-grid,
+  .dashboard-bottom-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 
-  .text-5xl {
-    font-size: 2.5rem !important;
+  .dashboard-chart-area {
+    height: 240px;
   }
 
-  .text-3xl {
-    font-size: 1.75rem !important;
+  .dashboard-subtitle {
+    font-size: 0.875rem;
   }
 
-  .gap-xl {
-    gap: var(--spacing-lg) !important;
+  .stat-card {
+    padding: 1.125rem;
   }
 
-  /* Fix for dashboard charts and tables */
-  .glass-panel[style*="span 2"] {
-    grid-column: span 1 !important;
+  .stat-value {
+    font-size: 1.5rem;
   }
 
-  /* Make tables scrollable horizontally */
+  /* Tesorería */
+  .tesoreria-top-grid,
+  .tesoreria-mid-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .tesoreria-chart-area {
+    height: 220px;
+  }
+
+  .tesoreria-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Reservas */
+  .reservas-recursos-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Disciplinas */
+  .disciplinas-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Socios search */
+  .socios-search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .socios-search-input {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .socios-search-select {
+    width: 100%;
+    min-width: unset;
+  }
+
+  /* Tables */
   .table-responsive,
   .table-container {
     display: block;
@@ -844,14 +1001,48 @@ textarea {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Quick actions stretch */
-  .glass-panel[style*="flex: 1"] {
-    width: 100%;
+  /* Strip excessive padding on mobile */
+  .p-10 {
+    padding: var(--spacing-lg) !important;
   }
 
-  /* Specific padding fixes for tables */
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+
+  .gap-xl {
+    gap: var(--spacing-lg) !important;
+  }
+
+  /* Table cells tighter on mobile */
   table th,
   table td {
-    padding: 1rem !important;
+    padding: 0.75rem 0.875rem !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* ============================================
+   TABLET RESPONSIVE ADJUSTMENTS (≤1024px)
+   ============================================ */
+@media (max-width: 1024px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tesoreria-top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .disciplinas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tesoreria-form-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

@@ -32,27 +32,28 @@ export default function Reservas() {
 
     return (
         <div className="page-container animate-fade-in">
-            <header className="page-header flex items-center justify-between">
+            {/* Page header — wraps on mobile */}
+            <header className="page-header reservas-header">
                 <div>
                     <h1 className="page-title">Reservas y Alquileres</h1>
-                    <p className="text-secondary text-lg mt-2">Gestión de quinchos, canchas y salones.</p>
+                    <p className="text-secondary dashboard-subtitle mt-2">Gestión de quinchos, canchas y salones.</p>
                 </div>
-                <button className="btn btn-primary flex items-center gap-sm" onClick={() => setShowModal(true)}>
-                    <Plus size={20} />
+                <button className="btn btn-primary flex items-center gap-sm" onClick={() => setShowModal(true)} style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
+                    <Plus size={18} />
                     <span>Nueva Reserva</span>
                 </button>
             </header>
 
-            {/* Stats/Summary Row */}
-            <div className="grid grid-cols-1 md-grid-cols-2 gap-xl mb-8">
+            {/* Resource cards grid */}
+            <div className="reservas-recursos-grid mb-8">
                 {recursos.map(rec => (
-                    <div key={rec.id} className="glass-panel p-6 flex items-center justify-between">
+                    <div key={rec.id} className="glass-panel p-4 flex items-center justify-between" style={{ gap: '1rem' }}>
                         <div className="flex items-center gap-md">
-                            <div className="icon-container bg-primary-10">
-                                <MapPin size={24} className="text-primary" />
+                            <div className="icon-btn" style={{ background: 'rgba(59,130,246,0.1)', flexShrink: 0 }}>
+                                <MapPin size={20} style={{ color: 'var(--accent-primary)' }} />
                             </div>
                             <div>
-                                <h3 className="font-bold text-lg">{rec.nombre}</h3>
+                                <h3 className="font-bold">{rec.nombre}</h3>
                                 <p className="text-sm text-secondary">{rec.tipo} • ${rec.precioHora}/hr</p>
                             </div>
                         </div>
@@ -60,21 +61,22 @@ export default function Reservas() {
                 ))}
             </div>
 
-            <div className="glass-panel p-6">
+            {/* Reservas Table */}
+            <div className="glass-panel p-4">
                 <h2 className="text-xl font-bold mb-6 flex items-center gap-sm">
-                    <CalendarDays size={20} className="text-primary" />
+                    <CalendarDays size={20} style={{ color: 'var(--accent-primary)' }} />
                     Agenda de Reservas
                 </h2>
 
                 <div className="table-container">
-                    <table className="table">
+                    <table className="table" style={{ minWidth: '600px' }}>
                         <thead>
                             <tr>
                                 <th>Recurso</th>
                                 <th>Reservado Por</th>
                                 <th>Fecha y Hora</th>
                                 <th>Estado</th>
-                                <th>Seña Pagada</th>
+                                <th>Seña</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -86,32 +88,30 @@ export default function Reservas() {
                                     </td>
                                     <td>{res.reservadoPor}</td>
                                     <td>
-                                        <div className="flex items-center gap-sm">
-                                            <CalendarDays size={14} className="text-secondary" />
+                                        <div className="flex items-center gap-sm" style={{ flexWrap: 'nowrap' }}>
+                                            <CalendarDays size={13} className="text-secondary" />
                                             <span>{res.fecha}</span>
                                             <span className="text-secondary">|</span>
-                                            <Clock size={14} className="text-secondary" />
-                                            <span>{res.hora} hs</span>
+                                            <Clock size={13} className="text-secondary" />
+                                            <span>{res.hora}hs</span>
                                         </div>
                                     </td>
                                     <td>
                                         <span className={`badge ${res.estado === 'Confirmada' ? 'badge-success' : 'badge-warning'}`}>
-                                            {res.estado === 'Confirmada' ? <CheckCircle2 size={14} /> : <Clock size={14} />}
+                                            {res.estado === 'Confirmada' ? <CheckCircle2 size={13} /> : <Clock size={13} />}
                                             {res.estado}
                                         </span>
                                     </td>
-                                    <td className="font-mono text-success">
-                                        ${res.señaPagada.toLocaleString()}
-                                    </td>
+                                    <td className="font-mono text-success">${res.señaPagada.toLocaleString()}</td>
                                     <td>
                                         {res.estado === 'Pendiente Seña' && (
                                             <button
                                                 className="btn btn-outline flex items-center gap-1 text-xs"
-                                                style={{ padding: '0.25rem 0.5rem' }}
+                                                style={{ padding: '0.25rem 0.5rem', whiteSpace: 'nowrap' }}
                                                 onClick={() => pagarSena(res.id, 5000)}
                                             >
-                                                <DollarSign size={14} />
-                                                Reg. Seña ($5000)
+                                                <DollarSign size={13} />
+                                                Reg. Seña
                                             </button>
                                         )}
                                     </td>
@@ -127,19 +127,20 @@ export default function Reservas() {
                 </div>
             </div>
 
+            {/* Modal — full screen on mobile */}
             {showModal && (
                 <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-                    <div className="glass-panel w-full" style={{ maxWidth: '500px' }}>
-                        <div className="p-6 border-b border-glass flex items-center justify-between">
-                            <h2 className="text-2xl font-bold">Nueva Reserva</h2>
+                    <div className="glass-panel" style={{ width: '100%', maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto' }}>
+                        <div className="p-5 border-b border-glass flex items-center justify-between">
+                            <h2 className="text-xl font-bold">Nueva Reserva</h2>
                             <button className="icon-btn" onClick={() => setShowModal(false)} style={{ border: 'none', background: 'transparent' }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
                         </div>
 
-                        <form onSubmit={handleCreateReserva} className="p-6 space-y-4">
+                        <form onSubmit={handleCreateReserva} className="p-5 flex-col gap-lg" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div>
-                                <label className="block text-sm font-medium mb-1">Recurso/Espacio</label>
+                                <label className="block text-sm font-medium mb-2">Recurso/Espacio</label>
                                 <select
                                     className="input-field w-full"
                                     required
@@ -155,7 +156,7 @@ export default function Reservas() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-1">Responsable (Socio o Externo)</label>
+                                <label className="block text-sm font-medium mb-2">Responsable (Socio o Externo)</label>
                                 <input
                                     type="text"
                                     className="input-field w-full"
@@ -166,9 +167,9 @@ export default function Reservas() {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2" style={{ gap: '1rem' }}>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Fecha</label>
+                                    <label className="block text-sm font-medium mb-2">Fecha</label>
                                     <input
                                         type="date"
                                         className="input-field w-full"
@@ -178,7 +179,7 @@ export default function Reservas() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Hora Inicio</label>
+                                    <label className="block text-sm font-medium mb-2">Hora Inicio</label>
                                     <input
                                         type="time"
                                         className="input-field w-full"
@@ -190,7 +191,7 @@ export default function Reservas() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium mb-1">Seña Adelantada ($)</label>
+                                <label className="block text-sm font-medium mb-2">Seña Adelantada ($)</label>
                                 <input
                                     type="number"
                                     className="input-field w-full"
@@ -201,9 +202,9 @@ export default function Reservas() {
                                 <p className="text-xs text-secondary mt-1">Si no se deja seña, la reserva quedará "Pendiente".</p>
                             </div>
 
-                            <div className="pt-4 flex gap-4">
-                                <button type="button" className="btn btn-outline flex-1" onClick={() => setShowModal(false)}>Cancelar</button>
-                                <button type="submit" className="btn btn-primary flex-1">Confirmar Reserva</button>
+                            <div className="flex gap-3 pt-2">
+                                <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={() => setShowModal(false)}>Cancelar</button>
+                                <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>Confirmar Reserva</button>
                             </div>
                         </form>
                     </div>
