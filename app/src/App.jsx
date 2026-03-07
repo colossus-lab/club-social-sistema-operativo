@@ -17,7 +17,7 @@ function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <div className="sidebar-logo">{clubInfo.name.charAt(0).toUpperCase()}</div>
+        <img src="/clubsocialos.ico" alt="Club Logo" style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }} />
         <div>
           <h2 className="text-lg font-bold" style={{ marginBottom: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '180px' }}>{clubInfo.name}</h2>
           <span className="text-xs text-secondary">{clubInfo.location}</span>
@@ -52,6 +52,11 @@ function Sidebar() {
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">Estado del Sistema</span>
           <span className="badge badge-success">Óptimo</span>
+        </div>
+        <div className="mt-4 pt-3 border-t border-glass text-center">
+          <p className="text-xs text-secondary font-medium">
+            Powered by <a href="https://colossuslab.org" target="_blank" rel="noopener noreferrer" className="text-primary hover-text-accent transition-colors">ColossusLab.org</a>
+          </p>
         </div>
       </div>
     </aside>
