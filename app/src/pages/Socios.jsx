@@ -105,8 +105,8 @@ export default function Socios() {
                 </div>
             </div>
 
-            <div className="glass-panel" style={{ overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <div className="glass-panel table-responsive">
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
                     <thead>
                         <tr style={{ background: 'var(--table-hover)', borderBottom: '1px solid var(--glass-border)' }}>
                             <th style={{ padding: '1.25rem 2rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Socio</th>
