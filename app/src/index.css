@@ -672,3 +672,150 @@ textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--glass-border-hover);
 }
+
+/* Sports Loader Animations */
+.sports-loader {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-core {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  box-shadow: 0 0 30px var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: core-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.core-icon {
+  width: 28px;
+  height: 28px;
+  animation: spin-slow 10s linear infinite;
+}
+
+.premium-sport-icon {
+  width: 36px;
+  height: 36px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+  border-radius: 50%;
+  background: var(--glass-bg);
+}
+
+/* Orbital Mechanics */
+.orbit-track {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px dashed var(--glass-border);
+  transform: translate(-50%, -50%);
+}
+
+.track-1 {
+  width: 110px;
+  height: 110px;
+  animation: spin 4s linear infinite;
+}
+
+.track-2 {
+  width: 160px;
+  height: 160px;
+  animation: spin-reverse 5s linear infinite;
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.track-3 {
+  width: 220px;
+  height: 220px;
+  animation: spin 7s linear infinite;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.orbit-item {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  margin-left: -18px;
+}
+
+.item-1 {
+  animation: spin-reverse 4s linear infinite;
+}
+
+.item-2 {
+  animation: spin 5s linear infinite;
+}
+
+.item-3 {
+  animation: spin-reverse 7s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes spin-slow {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes core-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px var(--accent-primary);
+  }
+
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px var(--accent-primary);
+  }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .flex-col-mobile {
+    flex-direction: column !important;
+  }
+
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .p-10 {
+    padding: var(--spacing-lg) !important;
+  }
+
+  .text-5xl {
+    font-size: 2.5rem !important;
+  }
+
+  .text-3xl {
+    font-size: 1.75rem !important;
+  }
+
+  .gap-xl {
+    gap: var(--spacing-lg) !important;
+  }
+}
