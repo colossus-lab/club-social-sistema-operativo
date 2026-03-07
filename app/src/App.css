@@ -1,4 +1,4 @@
-/* Layout and App specific styling */
+/* App Layout - Main structure */
 
 .app-container {
   display: flex;
@@ -7,9 +7,11 @@
   overflow: hidden;
 }
 
-/* Sidebar Styling */
+/* ============================================================
+   SIDEBAR — Desktop (left panel)
+   ============================================================ */
 .sidebar {
-  width: 280px;
+  width: 260px;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -18,7 +20,6 @@
   flex-direction: column;
   padding: var(--spacing-lg);
   z-index: 10;
-  transition: all var(--transition-normal);
   flex-shrink: 0;
 }
 
@@ -29,18 +30,17 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-.sidebar-logo {
-  width: 40px;
-  height: 40px;
-  background: var(--gradient-primary);
-  border-radius: var(--radius-md);
+.sidebar-footer {
+  padding: 1.25rem;
+  margin-top: auto;
+}
+
+/* DESKTOP: sidebar-nav = vertical list */
+.sidebar-nav {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 1.5rem;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  flex-direction: column;
+  flex: 1;
+  gap: var(--spacing-xs);
 }
 
 .nav-link {
@@ -50,9 +50,10 @@
   padding: var(--spacing-md);
   color: var(--text-secondary);
   border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-xs);
   font-weight: 500;
+  font-size: 0.9375rem;
   transition: all var(--transition-fast);
+  touch-action: manipulation;
 }
 
 .nav-link:hover {
@@ -66,13 +67,13 @@
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
-.nav-link svg {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
+.nav-label {
+  white-space: nowrap;
 }
 
-/* Main Content Area */
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
 .main-content {
   flex: 1;
   display: flex;
@@ -80,14 +81,17 @@
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  position: relative;
 }
 
+/* ============================================================
+   TOPBAR
+   ============================================================ */
 .topbar {
   height: 64px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  /* desktop: actions right-aligned */
   padding: 0 var(--spacing-xl);
   background: transparent;
   backdrop-filter: blur(10px);
@@ -99,12 +103,14 @@
 
 .topbar-page-title {
   display: none;
+  /* hidden on desktop */
   font-size: 1.1rem;
   font-weight: 700;
   background: linear-gradient(135deg, var(--text-primary), var(--text-muted));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin-right: auto;
 }
 
 .topbar-actions {
@@ -127,7 +133,6 @@
 
 .user-profile:hover {
   background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
 }
 
 .user-avatar {
@@ -139,7 +144,7 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: white;
   flex-shrink: 0;
 }
@@ -165,7 +170,9 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Animations */
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
 @keyframes slideInFromRight {
   from {
     opacity: 0;
@@ -182,19 +189,20 @@
   animation: slideInFromRight 0.3s ease-out;
 }
 
-/* ============================================
-   MOBILE OPTIMIZATIONS (max-width: 768px)
-   ============================================ */
+/* ============================================================
+   MOBILE (≤768px) — Sidebar → Bottom Navigation Bar
+   ============================================================ */
 @media (max-width: 768px) {
+
+  /* ── App container stacks vertically ── */
   .app-container {
     flex-direction: column;
   }
 
-  /* ---- Bottom Navigation Bar ---- */
+  /* ── Sidebar becomes a fixed bottom bar ── */
   .sidebar {
     width: 100%;
-    height: auto;
-    min-height: 60px;
+    height: 60px;
     flex-direction: row;
     padding: 0;
     border-right: none;
@@ -203,60 +211,58 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 50;
-    justify-content: space-around;
-    align-items: stretch;
+    z-index: 100;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-  }
-
-  .sidebar-header {
-    display: none;
-  }
-
-  .sidebar>nav {
-    flex-direction: row !important;
-    width: 100%;
-    justify-content: space-around;
     align-items: stretch;
-    gap: 0;
+  }
+
+  /* Hide header and footer in bottom nav */
+  .sidebar-header,
+  .sidebar-footer {
+    display: none !important;
+  }
+
+  /* Nav fills the bar horizontally */
+  .sidebar-nav {
+    flex-direction: row;
+    /* ← key fix: CSS class, no !important fight */
+    width: 100%;
     flex: 1;
+    gap: 0;
+    align-items: stretch;
+    justify-content: space-around;
   }
 
-  .sidebar .glass-panel {
-    display: none;
-  }
-
+  /* Each nav item = vertical icon + label */
   .nav-link {
     flex-direction: column;
-    padding: 8px 4px 10px;
-    gap: 4px;
-    font-size: 10px;
-    margin-bottom: 0;
     flex: 1;
     justify-content: center;
     align-items: center;
+    padding: 6px 4px 8px;
+    gap: 3px;
     border-radius: 0;
-    line-height: 1;
+    font-size: 9px;
+    font-weight: 600;
     min-height: 60px;
-    touch-action: manipulation;
+    line-height: 1;
   }
 
   .nav-link svg {
     width: 22px;
     height: 22px;
-    margin-bottom: 2px;
+    flex-shrink: 0;
   }
 
-  /* Show labels on mobile */
-  .nav-link span {
+  .nav-label {
     display: block;
     font-size: 9px;
-    font-weight: 600;
     text-align: center;
     white-space: nowrap;
   }
 
+  /* Active state: top border instead of background */
   .nav-link.active {
     background: transparent;
     color: var(--accent-primary);
@@ -264,31 +270,32 @@
     border-top: 2px solid var(--accent-primary);
   }
 
-  /* ---- Main Content ---- */
+  /* ── Main content ── */
   .main-content {
-    height: 100vh;
-    margin-bottom: 0;
-    padding-bottom: 70px;
-    /* space for fixed bottom nav */
+    height: auto;
+    min-height: 100vh;
+    padding-bottom: 60px;
+    /* space for bottom bar */
   }
 
-  /* ---- Topbar ---- */
+  /* ── Topbar on mobile ── */
   .topbar {
     height: 56px;
-    padding: 0 var(--spacing-md);
+    padding: 0 1rem;
     justify-content: space-between;
   }
 
   .topbar-page-title {
     display: block;
+    /* show page title on mobile */
   }
 
-  .topbar-actions .user-profile span {
+  /* Hide "Admin" text, keep avatar */
+  .user-name {
     display: none;
-    /* hide "Administrador" text, keep avatar */
   }
 
-  /* ---- Page Container ---- */
+  /* ── Page Container ── */
   .page-container {
     padding: 1rem;
   }
@@ -298,6 +305,6 @@
   }
 
   .page-header {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 }

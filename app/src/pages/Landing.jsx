@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useClubStore } from '../store/useClubStore';
-import { ShieldCheck, MapPin, Building2, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Building2, CheckCircle2, MapPin, ArrowRight, Trophy, Users, Wallet } from 'lucide-react';
 
 export default function Landing() {
     const { registerClub } = useClubStore();
-    const [formData, setFormData] = useState({ name: '', location: '', foundation: '' });
+    const [formData, setFormData] = useState({ name: '', location: '' });
     const [isLoading, setIsLoading] = useState(false);
     const [loadingStep, setLoadingStep] = useState(0);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsInitialLoading(false);
-        }, 2500);
+        const timer = setTimeout(() => setIsInitialLoading(false), 2500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -20,14 +18,12 @@ export default function Landing() {
         'Inicializando Base de Datos Social...',
         'Cargando Módulos de Tesorería...',
         'Organizando Disciplinas Deportivas...',
-        '¡Tu ecosistema está listo!'
+        '¡Tu ecosistema está listo!',
     ];
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
-
-        // Simulated staggered loading steps
         let step = 0;
         const interval = setInterval(() => {
             step += 1;
@@ -36,241 +32,181 @@ export default function Landing() {
                 clearInterval(interval);
                 setTimeout(() => {
                     registerClub({
-                        name: formData.name || 'Club Social',
+                        name: formData.name || 'Club Social OS',
                         location: formData.location || 'Argentina',
-                        foundation: formData.foundation || new Date().getFullYear().toString(),
+                        foundation: new Date().getFullYear().toString(),
                     });
-                }, 1500); // Wait a bit on the final success message before transitioning
+                }, 1500);
             }
         }, 1200);
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
+    /* ─── Initial Sports Loader ─── */
     if (isInitialLoading) {
         return (
-            <div className="flex flex-col items-center justify-center w-full min-h-screen" style={{ background: 'var(--bg-primary)', position: 'fixed', inset: 0, zIndex: 9999 }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(circle at center, var(--bg-secondary) 0%, var(--bg-primary) 100%)', opacity: 0.8, zIndex: 0 }}></div>
-
-                <div className="relative z-10 flex flex-col items-center justify-center animate-fade-in">
-                    <div className="relative mb-12" style={{ width: '200px', height: '200px' }}>
+            <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, var(--bg-secondary) 0%, var(--bg-primary) 100%)', opacity: 0.8 }} />
+                <div className="animate-fade-in" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    {/* Orbital loader */}
+                    <div style={{ position: 'relative', width: 200, height: 200, marginBottom: 32 }}>
                         <div className="sports-loader">
-                            <div className="loader-core" style={{ width: '70px', height: '70px' }}>
-                                <svg viewBox="0 0 24 24" fill="none" className="core-icon text-white" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '36px', height: '36px' }}>
+                            <div className="loader-core" style={{ width: 70, height: 70 }}>
+                                <svg viewBox="0 0 24 24" fill="none" className="core-icon" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: 36, height: 36 }}>
                                     <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                                 </svg>
                             </div>
-
-                            <div className="orbit-track track-1" style={{ width: '140px', height: '140px' }}>
+                            <div className="orbit-track track-1" style={{ width: 140, height: 140 }}>
                                 <div className="orbit-item item-1">
-                                    <svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--accent-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="premium-sport-icon" style={{ width: '44px', height: '44px' }}>
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M12 12l2.5-3.5L18 10l-1.5 4.5z" fill="var(--glass-border)" />
-                                        <path d="M12 12l-2.5-3.5L6 10l1.5 4.5z" fill="var(--glass-border)" />
-                                        <path d="M12 12v5.5l-3.5 2" />
-                                        <path d="M12 17.5l3.5 2" />
-                                    </svg>
+                                    <svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--accent-primary)" strokeWidth="1.5" className="premium-sport-icon" style={{ width: 40, height: 40 }}><circle cx="12" cy="12" r="10" /><path d="M12 12l2.5-3.5L18 10l-1.5 4.5z" fill="var(--glass-border)" /><path d="M12 12l-2.5-3.5L6 10l1.5 4.5z" fill="var(--glass-border)" /></svg>
                                 </div>
                             </div>
-                            <div className="orbit-track track-2" style={{ width: '200px', height: '200px' }}>
+                            <div className="orbit-track track-2" style={{ width: 200, height: 200 }}>
                                 <div className="orbit-item item-2">
-                                    <svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--warning)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="premium-sport-icon" style={{ width: '44px', height: '44px' }}>
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M5.4 5.4l13.2 13.2" />
-                                        <path d="M18.6 5.4L5.4 18.6" />
-                                        <path d="M12 2A15.3 15.3 0 0112 22" />
-                                        <path d="M2 12A15.3 15.3 0 0122 12" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div className="orbit-track track-3" style={{ width: '270px', height: '270px' }}>
-                                <div className="orbit-item item-3">
-                                    <svg viewBox="0 0 24 24" fill="var(--success)" opacity="0.9" stroke="var(--bg-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="premium-sport-icon" style={{ width: '44px', height: '44px' }}>
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M6 12c0-3.3 2.7-6 6-6" strokeWidth="2" />
-                                        <path d="M18 12c0 3.3-2.7 6-6 6" strokeWidth="2" />
-                                        <path d="M12 2v20" stroke="transparent" />
-                                    </svg>
+                                    <svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--warning)" strokeWidth="1.5" className="premium-sport-icon" style={{ width: 40, height: 40 }}><circle cx="12" cy="12" r="10" /><path d="M5.4 5.4l13.2 13.2" /><path d="M18.6 5.4L5.4 18.6" /></svg>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h1 className="text-3xl font-extrabold mb-3 text-center" style={{ background: 'var(--gradient-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Club Social OS</h1>
-                    <p className="text-sm font-medium tracking-widest text-secondary uppercase animate-pulse-glow" style={{ padding: '4px 12px', borderRadius: '20px', background: 'var(--glass-bg)' }}>Optimizando terreno de juego...</p>
+                    <h1 className="text-3xl font-extrabold mb-3 text-center" style={{ background: 'var(--gradient-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                        Club Social OS
+                    </h1>
+                    <p className="text-sm font-medium text-secondary tracking-widest uppercase text-center">Optimizando terreno de juego...</p>
                 </div>
             </div>
         );
     }
 
+    /* ─── Setup Loading Screen ─── */
     if (isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center w-full" style={{ minHeight: '100vh', background: 'var(--bg-primary)', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 999 }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(circle at center, var(--bg-secondary) 0%, var(--bg-primary) 100%)', opacity: 0.8, zIndex: 0 }}></div>
-
-                <div className="glass-panel text-center animate-fade-in flex flex-col items-center justify-center relative z-10" style={{ padding: '4rem', maxWidth: '600px', width: '90%' }}>
-                    <div className="relative mb-16 mt-8" style={{ width: '160px', height: '160px' }}>
+            <div style={{ position: 'fixed', inset: 0, zIndex: 999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, var(--bg-secondary) 0%, var(--bg-primary) 100%)', opacity: 0.8 }} />
+                <div className="glass-panel animate-fade-in" style={{ position: 'relative', zIndex: 1, width: '90%', maxWidth: 480, padding: '3rem 2.5rem', textAlign: 'center' }}>
+                    <div style={{ position: 'relative', width: 140, height: 140, margin: '0 auto 2rem' }}>
                         <div className="sports-loader">
                             <div className="loader-core">
-                                <svg viewBox="0 0 24 24" fill="none" className="core-icon text-white" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                                </svg>
+                                <svg viewBox="0 0 24 24" fill="none" className="core-icon" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                             </div>
-
-                            <div className="orbit-track track-1">
-                                <div className="orbit-item item-1">
-                                    <svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--accent-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="premium-sport-icon">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M12 12l2.5-3.5L18 10l-1.5 4.5z" fill="var(--glass-border)" />
-                                        <path d="M12 12l-2.5-3.5L6 10l1.5 4.5z" fill="var(--glass-border)" />
-                                        <path d="M12 12v5.5l-3.5 2" />
-                                        <path d="M12 17.5l3.5 2" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div className="orbit-track track-2">
-                                <div className="orbit-item item-2">
-                                    <svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--warning)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="premium-sport-icon">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M5.4 5.4l13.2 13.2" />
-                                        <path d="M18.6 5.4L5.4 18.6" />
-                                        <path d="M12 2A15.3 15.3 0 0112 22" />
-                                        <path d="M2 12A15.3 15.3 0 0122 12" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div className="orbit-track track-3">
-                                <div className="orbit-item item-3">
-                                    <svg viewBox="0 0 24 24" fill="var(--success)" opacity="0.9" stroke="var(--bg-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="premium-sport-icon">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M6 12c0-3.3 2.7-6 6-6" strokeWidth="2" />
-                                        <path d="M18 12c0 3.3-2.7 6-6 6" strokeWidth="2" />
-                                        <path d="M12 2v20" stroke="transparent" />
-                                    </svg>
-                                </div>
-                            </div>
+                            <div className="orbit-track track-1"><div className="orbit-item item-1"><svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--accent-primary)" strokeWidth="1.5" className="premium-sport-icon"><circle cx="12" cy="12" r="10" /></svg></div></div>
+                            <div className="orbit-track track-2"><div className="orbit-item item-2"><svg viewBox="0 0 24 24" fill="var(--bg-primary)" stroke="var(--warning)" strokeWidth="1.5" className="premium-sport-icon"><circle cx="12" cy="12" r="10" /></svg></div></div>
                         </div>
                     </div>
-
-                    <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
-                        {loadingStep === loadingMessages.length - 1 ? (
-                            <span className="flex items-center justify-center gap-sm text-success">
-                                <CheckCircle2 size={28} /> Completado
-                            </span>
-                        ) : 'Configurando tu Club...'}
+                    <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+                        {loadingStep === loadingMessages.length - 1
+                            ? <span style={{ color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}><CheckCircle2 size={24} /> Completado</span>
+                            : 'Configurando tu Club...'}
                     </h2>
-                    <p className="text-lg text-secondary transition-all" style={{ height: '28px' }}>
-                        {loadingMessages[loadingStep]}
-                    </p>
-
-                    <div className="mt-10 relative w-full h-2 rounded-full overflow-hidden" style={{ background: 'var(--table-hover)' }}>
-                        <div
-                            style={{
-                                position: 'absolute', top: 0, left: 0, height: '100%',
-                                background: 'var(--gradient-primary)',
-                                width: `${(loadingStep / (loadingMessages.length - 1)) * 100}%`,
-                                transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                                boxShadow: '0 0 10px var(--accent-primary)'
-                            }}>
-                        </div>
+                    <p className="text-secondary mb-6" style={{ minHeight: 28 }}>{loadingMessages[loadingStep]}</p>
+                    <div style={{ width: '100%', height: 6, borderRadius: 3, background: 'var(--table-hover)', overflow: 'hidden' }}>
+                        <div style={{ height: '100%', background: 'var(--gradient-primary)', width: `${(loadingStep / (loadingMessages.length - 1)) * 100}%`, transition: 'width 1.2s cubic-bezier(0.4,0,0.2,1)', boxShadow: '0 0 10px var(--accent-primary)' }} />
                     </div>
                 </div>
             </div>
         );
     }
 
+    /* ─── Landing Main ─── */
     return (
-        <div className="flex min-h-screen w-full relative overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
-            {/* Background Graphic Elements */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'var(--gradient-bg)', opacity: 0.8, zIndex: 0 }}></div>
-            <div className="absolute top-0 right-0" style={{ width: '50vw', height: '50vw', borderRadius: '50%', background: 'var(--accent-primary)', filter: 'blur(120px)', opacity: 0.15, zIndex: 0 }}></div>
-            <div className="absolute bottom-0 left-0" style={{ width: '40vw', height: '40vw', borderRadius: '50%', background: 'var(--accent-secondary)', filter: 'blur(120px)', opacity: 0.15, zIndex: 0 }}></div>
+        <div className="landing-root">
+            {/* Background blobs */}
+            <div className="landing-blob landing-blob-tr" />
+            <div className="landing-blob landing-blob-bl" />
 
-            <div className="flex flex-col-mobile w-full relative z-10 p-10 gap-xl items-center justify-center max-w-[1600px] mx-auto">
-
-                {/* Left Side: Copywriting & Value Prop */}
-                <div className="flex-col justify-center max-w-lg" style={{ flex: 1 }}>
-                    <div className="mb-6 inline-flex px-4 py-2 rounded-full border border-glass" style={{ background: 'var(--glass-bg)' }}>
-                        <span className="text-sm font-bold text-transparent bg-clip-text" style={{ background: 'var(--gradient-primary)', WebkitBackgroundClip: 'text' }}>
-                            PROYECTO SOCIAL DE CÓDIGO ABIERTO
-                        </span>
+            <div className="landing-inner">
+                {/* ── LEFT: Copy ── */}
+                <div className="landing-copy">
+                    <div className="landing-badge">
+                        <span>PROYECTO DE CÓDIGO ABIERTO</span>
                     </div>
-                    <h1 className="text-5xl font-extrabold mb-6 leading-tight">
-                        Gestión Premium para <br /><span style={{ color: 'var(--accent-primary)' }}>Clubes de Barrio.</span>
+
+                    <h1 className="landing-title">
+                        Gestión Premium<br />
+                        para <span style={{ color: 'var(--accent-primary)' }}>Clubes de Barrio.</span>
                     </h1>
-                    <p className="text-xl text-secondary mb-10 leading-relaxed">
-                        Potencia la organización de tu club. Controla ingresos por cuotas, inscribe socios en disciplinas deportivas y administra las finanzas sin costos ocultos.
+
+                    <p className="landing-desc">
+                        Controla ingresos por cuotas, inscribe socios en disciplinas deportivas y administra finanzas sin costos ocultos.
                     </p>
 
-                    <div className="grid grid-cols-2 gap-md">
-                        <div className="glass-panel p-6">
-                            <ShieldCheck size={32} className="text-success mb-4" />
-                            <h3 className="font-bold text-lg mb-2">Finanzas Activas</h3>
-                            <p className="text-sm text-secondary">Identifica deudores de cuotas y lleva el control de tesorería al instante.</p>
+                    <div className="landing-features">
+                        <div className="landing-feature">
+                            <ShieldCheck size={22} style={{ color: 'var(--success)', flexShrink: 0 }} />
+                            <div>
+                                <div className="font-bold mb-1">Finanzas Activas</div>
+                                <div className="text-sm text-secondary">Identifica deudores y lleva el control de tesorería.</div>
+                            </div>
                         </div>
-                        <div className="glass-panel p-6">
-                            <Building2 size={32} className="text-accent-primary mb-4" />
-                            <h3 className="font-bold text-lg mb-2">Evolución Deportiva</h3>
-                            <p className="text-sm text-secondary">Digitaliza el padrón de socios y organiza a tus profesores.</p>
+                        <div className="landing-feature">
+                            <Trophy size={22} style={{ color: 'var(--accent-primary)', flexShrink: 0 }} />
+                            <div>
+                                <div className="font-bold mb-1">Evolución Deportiva</div>
+                                <div className="text-sm text-secondary">Organiza profesores y disciplinas deportivas.</div>
+                            </div>
+                        </div>
+                        <div className="landing-feature">
+                            <Users size={22} style={{ color: 'var(--warning)', flexShrink: 0 }} />
+                            <div>
+                                <div className="font-bold mb-1">Padrón Digital</div>
+                                <div className="text-sm text-secondary">Gestiona altas, bajas y categorías de socios.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Right Side: Setup Form */}
-                <div className="flex-col items-center justify-center flex-1 w-full flex-col-mobile">
-                    <div className="glass-panel shadow-lg w-full max-w-md p-10 relative overflow-hidden mx-auto">
-                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'var(--gradient-primary)' }}></div>
+                {/* ── RIGHT: Form ── */}
+                <div className="landing-form-wrap">
+                    <div className="glass-panel landing-form-card">
+                        {/* Color accent strip */}
+                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'var(--gradient-primary)', borderRadius: '12px 12px 0 0' }} />
 
-                        <h2 className="text-3xl font-bold mb-2">Setup Inicial</h2>
-                        <p className="text-sm text-secondary mb-8">Personaliza tu propio Sistema Operativo en segundos.</p>
+                        <h2 className="text-2xl font-bold mb-1">Setup Inicial</h2>
+                        <p className="text-secondary text-sm mb-6">Personalizá tu sistema en 30 segundos.</p>
 
-                        <form onSubmit={handleSubmit} className="flex-col gap-lg">
+                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                             <div>
-                                <label className="block text-sm font-semibold mb-2 text-secondary">Nombre de la Institución</label>
+                                <label className="block text-sm font-semibold text-secondary mb-2">Nombre del Club</label>
                                 <input
                                     type="text"
                                     name="name"
                                     className="input-glass"
                                     placeholder="Ej. Club Atlético San Martín"
-                                    style={{ height: '3.5rem', fontSize: '1.1rem' }}
+                                    style={{ height: '3.25rem', fontSize: '1rem' }}
                                     value={formData.name}
-                                    onChange={handleInputChange}
+                                    onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
                                     required
                                 />
                             </div>
-
                             <div>
-                                <label className="block text-sm font-semibold mb-2 text-secondary">Ubicación / Ciudad</label>
-                                <div className="relative">
-                                    <MapPin size={20} className="text-muted absolute" style={{ top: '50%', transform: 'translateY(-50%)', left: '1rem' }} />
+                                <label className="block text-sm font-semibold text-secondary mb-2">Ubicación</label>
+                                <div style={{ position: 'relative' }}>
+                                    <MapPin size={18} style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                                     <input
                                         type="text"
                                         name="location"
                                         className="input-glass"
                                         placeholder="Ej. Buenos Aires, Argentina"
-                                        style={{ height: '3.5rem', fontSize: '1.1rem', paddingLeft: '3rem' }}
+                                        style={{ height: '3.25rem', fontSize: '1rem', paddingLeft: '3rem' }}
                                         value={formData.location}
-                                        onChange={handleInputChange}
+                                        onChange={e => setFormData(p => ({ ...p, location: e.target.value }))}
                                         required
                                     />
                                 </div>
                             </div>
-
-                            <button type="submit" className="btn-primary w-full justify-center mt-4" style={{ height: '3.5rem', fontSize: '1.1rem' }}>
+                            <button
+                                type="submit"
+                                className="btn-primary"
+                                style={{ width: '100%', justifyContent: 'center', height: '3.25rem', fontSize: '1rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: 8 }}
+                            >
                                 Crear Entorno Virtual
+                                <ArrowRight size={18} />
                             </button>
                         </form>
 
-                        <p className="text-xs text-center text-muted mt-6">
-                            Todos los datos sensibles se mantienen anonimizados y locales por diseño.
+                        <p className="text-xs text-center text-muted mt-5">
+                            📍 Datos locales y anónimos por diseño.
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
     );
