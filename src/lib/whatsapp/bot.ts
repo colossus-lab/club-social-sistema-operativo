@@ -465,8 +465,8 @@ async function handleConfirmReservation(
 ): Promise<BotResponse> {
   if (selection === 'cancelar_reserva' || selection === 'no') {
     return {
-      text: 'Reserva cancelada. ¿En qué más puedo ayudarte?',
       ...getMainMenu(),
+      text: 'Reserva cancelada. ¿En qué más puedo ayudarte?',
     };
   }
 
@@ -489,8 +489,8 @@ async function handleConfirmReservation(
 
     if (error || !reserva) {
       return {
-        text: 'Hubo un error al crear la reserva. Por favor, intenta nuevamente o contacta a secretaría.',
         ...getMainMenu(),
+        text: 'Hubo un error al crear la reserva. Por favor, intenta nuevamente o contacta a secretaría.',
       };
     }
 
