@@ -1,7 +1,7 @@
 'use client'
 
 import { Wallet, Users, TrendingUp, AlertTriangle, CalendarDays } from 'lucide-react'
-import { useClubStore } from '@/src/store/useClubStore'
+import { useClubStore } from '@/store/useClubStore'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 
 function StatCard({ title, value, icon: Icon, trend, type = 'default' }: { title: string; value: string; icon: React.ElementType; trend: string; type?: string }) {

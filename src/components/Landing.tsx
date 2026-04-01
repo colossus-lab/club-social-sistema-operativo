@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useClubStore } from '@/src/store/useClubStore'
+import { useClubStore } from '@/store/useClubStore'
 import { ShieldCheck, Trophy, Users, ArrowRight, MapPin, CheckCircle2 } from 'lucide-react'
 
 export default function Landing() {

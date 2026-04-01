@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useClubStore } from '@/src/store/useClubStore'
+import { useClubStore } from '@/store/useClubStore'
 import { CreditCard, Receipt, FileText, CheckCircle2, TrendingUp, Download, Star } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 

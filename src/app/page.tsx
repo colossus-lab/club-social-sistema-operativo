@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useClubStore } from '@/src/store/useClubStore'
-import Landing from '@/src/components/Landing'
-import AppShell from '@/src/components/AppShell'
+import { useClubStore } from '@/store/useClubStore'
+import Landing from '@/components/Landing'
+import AppShell from '@/components/AppShell'
 
 export default function Home() {
   const { theme, isOnboarded } = useClubStore()

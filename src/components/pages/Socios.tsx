@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useClubStore } from '@/src/store/useClubStore'
+import { useClubStore } from '@/store/useClubStore'
 import { Search, UserPlus, FileEdit, UserCheck, UserMinus, MoreVertical, Mail, MessageCircle } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 

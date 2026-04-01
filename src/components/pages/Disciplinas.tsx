@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useClubStore } from '@/src/store/useClubStore'
+import { useClubStore } from '@/store/useClubStore'
 import { Trophy, Clock, Users, UserPlus, Search, CheckCircle2 } from 'lucide-react'
 
 export default function Disciplinas() {

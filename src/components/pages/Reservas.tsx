@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useClubStore } from '@/src/store/useClubStore'
+import { useClubStore } from '@/store/useClubStore'
 import { CalendarDays, Plus, Clock, CheckCircle2, DollarSign, MapPin } from 'lucide-react'
 
 export default function Reservas() {

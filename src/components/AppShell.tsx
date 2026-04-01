@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { LayoutDashboard, Users, CreditCard, Trophy, CalendarDays, Sun, Moon, MessageCircle } from 'lucide-react'
-import { useClubStore } from '@/src/store/useClubStore'
+import { useClubStore } from '@/store/useClubStore'
 import Dashboard from './pages/Dashboard'
 import Socios from './pages/Socios'
 import Tesoreria from './pages/Tesoreria'
