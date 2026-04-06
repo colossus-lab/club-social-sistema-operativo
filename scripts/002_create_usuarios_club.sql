@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS public.usuarios_club (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT NOT NULL,
   nombre TEXT,
+  apellido TEXT,
   avatar_url TEXT,
   rol TEXT NOT NULL DEFAULT 'viewer' CHECK (rol IN ('admin', 'tesorero', 'secretario', 'viewer')),
   club_id UUID, -- Para cuando tengamos multi-tenancy
@@ -49,17 +50,28 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
 BEGIN
-  INSERT INTO public.usuarios_club (id, email, nombre, avatar_url, rol)
+  INSERT INTO public.usuarios_club (id, email, nombre, apellido, avatar_url, rol)
   VALUES (
     new.id,
     new.email,
-    COALESCE(new.raw_user_meta_data ->> 'full_name', new.raw_user_meta_data ->> 'name', NULL),
+    COALESCE(
+      new.raw_user_meta_data ->> 'nombre',
+      new.raw_user_meta_data ->> 'first_name',
+      new.raw_user_meta_data ->> 'name',
+      NULL
+    ),
+    COALESCE(
+      new.raw_user_meta_data ->> 'apellido',
+      new.raw_user_meta_data ->> 'last_name',
+      NULL
+    ),
     COALESCE(new.raw_user_meta_data ->> 'avatar_url', new.raw_user_meta_data ->> 'picture', NULL),
-    'admin' -- El primer usuario será admin por defecto
+    'admin' -- El primer usuario sera admin por defecto
   )
   ON CONFLICT (id) DO UPDATE SET
     email = EXCLUDED.email,
     nombre = COALESCE(EXCLUDED.nombre, public.usuarios_club.nombre),
+    apellido = COALESCE(EXCLUDED.apellido, public.usuarios_club.apellido),
     avatar_url = COALESCE(EXCLUDED.avatar_url, public.usuarios_club.avatar_url),
     updated_at = NOW();
   
