@@ -7,7 +7,7 @@ import { useClubStore } from '@/store/useClubStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useClub } from '@/hooks/useClub'
 import Dashboard from './pages/Dashboard'
-import Socios from './pages/Socios'
+import SociosDB from './pages/SociosDB'
 import Tesoreria from './pages/Tesoreria'
 import Disciplinas from './pages/Disciplinas'
 import Reservas from './pages/Reservas'
@@ -147,7 +147,7 @@ export default function AppShell() {
       case 'dashboard':
         return <Dashboard />
       case 'socios':
-        return <Socios />
+        return <SociosDB />
       case 'tesoreria':
         return <Tesoreria />
       case 'disciplinas':
