@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { LayoutDashboard, Users, CreditCard, Trophy, CalendarDays, Sun, Moon, MessageCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { LayoutDashboard, Users, CreditCard, Trophy, CalendarDays, Sun, Moon, MessageCircle, LogOut } from 'lucide-react'
 import { useClubStore } from '@/store/useClubStore'
+import { useAuth } from '@/hooks/useAuth'
 import Dashboard from './pages/Dashboard'
 import Socios from './pages/Socios'
 import Tesoreria from './pages/Tesoreria'
@@ -65,9 +67,17 @@ function Sidebar({ currentPage, setCurrentPage }: { currentPage: string; setCurr
   )
 }
 
-function Topbar({ currentPage }: { currentPage: string }) {
+function Topbar({ currentPage, onLogout }: { currentPage: string; onLogout: () => void }) {
   const { theme, toggleTheme } = useClubStore()
+  const { profile } = useAuth()
   const currentNav = navItems.find(item => item.id === currentPage)
+
+  const getInitials = (profile: any) => {
+    if (!profile) return '?'
+    const nombre = profile.nombre || ''
+    const apellido = profile.apellido || ''
+    return `${nombre.charAt(0)}${apellido.charAt(0)}`.toUpperCase()
+  }
 
   return (
     <header className="topbar">
@@ -84,9 +94,24 @@ function Topbar({ currentPage }: { currentPage: string }) {
             : <Moon size={20} style={{ color: 'var(--accent-primary)' }} />}
         </button>
         <div className="user-profile">
-          <div className="user-avatar">A</div>
-          <span className="user-name text-sm font-medium">Admin</span>
+          <div className="user-avatar">{getInitials(profile)}</div>
+          <div className="flex flex-col items-end">
+            <span className="user-name text-sm font-medium">
+              {profile?.nombre && profile?.apellido 
+                ? `${profile.nombre} ${profile.apellido}`
+                : profile?.email?.split('@')[0] ?? 'Usuario'}
+            </span>
+            <span className="text-xs text-secondary capitalize">{profile?.rol ?? 'viewer'}</span>
+          </div>
         </div>
+        <button
+          onClick={onLogout}
+          className="icon-btn ml-2"
+          title="Cerrar sesión"
+          style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)' }}
+        >
+          <LogOut size={20} style={{ color: 'var(--accent-danger, #ef4444)' }} />
+        </button>
       </div>
     </header>
   )
@@ -94,6 +119,13 @@ function Topbar({ currentPage }: { currentPage: string }) {
 
 export default function AppShell() {
   const [currentPage, setCurrentPage] = useState('dashboard')
+  const router = useRouter()
+  const { logout } = useAuth()
+
+  const handleLogout = async () => {
+    await logout()
+    router.push('/auth/login')
+  }
 
   const renderPage = () => {
     switch (currentPage) {
@@ -118,7 +150,7 @@ export default function AppShell() {
     <div className="app-container">
       <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <main className="main-content">
-        <Topbar currentPage={currentPage} />
+        <Topbar currentPage={currentPage} onLogout={handleLogout} />
         <div className="page-transition">
           {renderPage()}
         </div>
