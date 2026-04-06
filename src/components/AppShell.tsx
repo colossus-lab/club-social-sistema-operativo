@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { LayoutDashboard, Users, CreditCard, Trophy, CalendarDays, Sun, Moon, MessageCircle, LogOut } from 'lucide-react'
 import { useClubStore } from '@/store/useClubStore'
 import { useAuth } from '@/hooks/useAuth'
+import { useClub } from '@/hooks/useClub'
 import Dashboard from './pages/Dashboard'
 import Socios from './pages/Socios'
 import Tesoreria from './pages/Tesoreria'
@@ -22,16 +22,19 @@ const navItems = [
   { id: 'whatsapp', icon: MessageCircle, label: 'WhatsApp' },
 ]
 
-function Sidebar({ currentPage, setCurrentPage }: { currentPage: string; setCurrentPage: (page: string) => void }) {
-  const { clubInfo } = useClubStore()
-  
+function Sidebar({ currentPage, setCurrentPage, clubName, clubLocation }: { 
+  currentPage: string
+  setCurrentPage: (page: string) => void
+  clubName: string
+  clubLocation: string 
+}) {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
         <img src="/clubsocialos.ico" alt="Logo" style={{ width: 40, height: 40, borderRadius: 10, objectFit: 'cover' }} />
         <div style={{ overflow: 'hidden' }}>
-          <h2 className="text-base font-bold" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 170 }}>{clubInfo.name}</h2>
-          <span className="text-xs text-secondary">{clubInfo.location}</span>
+          <h2 className="text-base font-bold" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 170 }}>{clubName}</h2>
+          <span className="text-xs text-secondary">{clubLocation}</span>
         </div>
       </div>
 
@@ -121,10 +124,22 @@ export default function AppShell() {
   const [currentPage, setCurrentPage] = useState('dashboard')
   const router = useRouter()
   const { logout } = useAuth()
+  const { displayName, location, loading: clubLoading } = useClub()
 
   const handleLogout = async () => {
     await logout()
     router.push('/auth/login')
+  }
+
+  if (clubLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen" style={{ background: 'var(--bg-primary)' }}>
+        <div className="text-center">
+          <div className="inline-block w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: 'var(--accent-primary)', borderTopColor: 'transparent' }}></div>
+          <p className="mt-4 font-medium" style={{ color: 'var(--text-primary)' }}>Cargando club...</p>
+        </div>
+      </div>
+    )
   }
 
   const renderPage = () => {
@@ -148,7 +163,12 @@ export default function AppShell() {
 
   return (
     <div className="app-container">
-      <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Sidebar 
+        currentPage={currentPage} 
+        setCurrentPage={setCurrentPage} 
+        clubName={displayName}
+        clubLocation={location}
+      />
       <main className="main-content">
         <Topbar currentPage={currentPage} onLogout={handleLogout} />
         <div className="page-transition">

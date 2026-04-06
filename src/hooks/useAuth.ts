@@ -85,5 +85,29 @@ export function useAuth() {
     }
   }
 
-  return { user, profile, loading, error, logout }
+  const refreshProfile = async () => {
+    if (!user) return
+
+    try {
+      const supabase = createClient()
+      const { data: profileData, error: profileError } = await supabase
+        .from('usuarios_club')
+        .select('*')
+        .eq('id', user.id)
+        .single()
+
+      if (profileError && profileError.code !== 'PGRST116') {
+        throw profileError
+      }
+
+      setProfile(profileData ?? null)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error refreshing profile'
+      setError(message)
+    }
+  }
+
+  const hasClub = profile?.club_id !== null && profile?.club_id !== undefined
+
+  return { user, profile, loading, error, logout, refreshProfile, hasClub }
 }
