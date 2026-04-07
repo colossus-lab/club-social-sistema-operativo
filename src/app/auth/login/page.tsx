@@ -1,7 +1,7 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -11,6 +11,11 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+
+  // Aplicar tema al body
+  useEffect(() => {
+    document.body.className = 'dark-theme'
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -56,9 +61,9 @@ export default function LoginPage() {
           {/* Logo */}
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
             <img 
-              src="/clubsocialos.ico" 
+              src="/logo.jpg" 
               alt="Club Social OS" 
-              style={{ width: 64, height: 64, borderRadius: 16 }} 
+              style={{ width: 72, height: 72, borderRadius: 16, objectFit: 'cover' }} 
             />
           </div>
 

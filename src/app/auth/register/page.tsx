@@ -1,11 +1,15 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function RegisterPage() {
+  // Aplicar tema al body
+  useEffect(() => {
+    document.body.className = 'dark-theme'
+  }, [])
   const [nombre, setNombre] = useState('')
   const [apellido, setApellido] = useState('')
   const [email, setEmail] = useState('')
@@ -34,8 +38,9 @@ export default function RegisterPage() {
     }
 
     try {
+      console.log('[v0] Iniciando registro con:', { email, nombre, apellido })
       const supabase = createClient()
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -47,10 +52,13 @@ export default function RegisterPage() {
         },
       })
 
+      console.log('[v0] Respuesta de signUp:', { data, error })
+
       if (error) throw error
       
       setSuccess(true)
     } catch (err) {
+      console.error('[v0] Error en registro:', err)
       setError(err instanceof Error ? err.message : 'Error al registrarse')
     } finally {
       setIsLoading(false)
@@ -140,9 +148,9 @@ export default function RegisterPage() {
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
             <img 
-              src="/clubsocialos.ico" 
+              src="/logo.jpg" 
               alt="Club Social OS" 
-              style={{ width: 64, height: 64, borderRadius: 16 }} 
+              style={{ width: 72, height: 72, borderRadius: 16, objectFit: 'cover' }} 
             />
           </div>
 
