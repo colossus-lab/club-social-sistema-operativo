@@ -1,137 +1,148 @@
-# Plan para Beta - Club Social OS
+# Plan Beta - Club Social OS
+
+## Que es
+
+Sistema operativo para clubes de barrio argentinos. Los administradores gestionan todo desde un dashboard web, los socios interactuan solo via WhatsApp con un bot automatizado.
+
+---
 
 ## Estado Actual (Abril 2026)
 
-### Funcional (conectado a Supabase)
+### Funciona con Supabase
 | Modulo | Estado |
 |--------|--------|
 | Auth (registro/login) | OK |
 | Setup Club (wizard 3 pasos) | OK |
 | Socios (CRUD completo) | OK |
+| Bot WhatsApp (webhook, flujos, API) | OK |
 
-### NO Funcional (usa datos mock de Zustand)
+### Usa datos mock (hay que conectar)
 | Modulo | Problema |
 |--------|----------|
-| Dashboard | Usa mock data |
-| Tesoreria | Usa mock data |
+| Dashboard | KPIs de useClubStore |
+| Recursos | No existe componente DB |
 | Reservas | Usa mock data |
-| WhatsApp | Usa mock data |
+| Tesoreria | Usa mock data |
+| Panel WhatsApp | Usa mock data |
 
 ---
 
-## Lo que falta para Beta
+## Lo que falta para Beta (4 dias)
 
-### Tareas Ordenadas por Prioridad
+### Dia 1: Dashboard + Recursos
+| Tarea | Detalle |
+|-------|---------|
+| DashboardDB | KPIs reales: total socios, morosos, ingresos mes, reservas activas |
+| RecursosDB | CRUD canchas/quinchos/salones conectado a tabla `recursos` |
 
-| # | Tarea | Que implica | Complejidad |
-|---|-------|-------------|-------------|
-| 1 | **Dashboard conectado a BD** | Query socios, facturas, calcular KPIs reales | Baja |
-| 2 | **Recursos conectado a BD** | CRUD canchas/quinchos/salones | Baja |
-| 3 | **Reservas conectado a BD** | CRUD reservas + calendario | Media |
-| 4 | **Tesoreria conectado a BD** | CRUD facturas + cobro cuotas | Media |
-| 5 | **Config Bot WhatsApp en BD** | Guardar credenciales en configuracion_bot | Baja |
-| 6 | **Probar bot WhatsApp** | Requiere cuenta Meta Business | Externa |
+### Dia 2: Reservas
+| Tarea | Detalle |
+|-------|---------|
+| ReservasDB | Listar, crear, editar reservas desde tabla `reservas` |
+| Calendario | Vista por recurso y fecha |
+| Senas | Registrar sena pagada |
 
-### Resumen
-- **4 componentes** a conectar con Supabase
-- **1 modulo** nuevo (Recursos) 
-- **1 configuracion** externa (Meta WhatsApp)
+### Dia 3: Tesoreria
+| Tarea | Detalle |
+|-------|---------|
+| TesoreriaDB | Lista de facturas pendientes/pagadas |
+| Cobrar cuota | Crear factura para socio |
+| Marcar pagada | Actualizar estado en BD |
 
----
-
-## Detalle por Tarea
-
-### 1. Dashboard conectado a BD
-**Archivo:** `src/components/pages/Dashboard.tsx`
-**Cambios:**
-- Reemplazar `useClubStore` por queries a Supabase
-- Calcular KPIs reales:
-  - Socios activos: `SELECT COUNT(*) FROM socios WHERE activo = true AND club_id = ?`
-  - Ingresos mensuales: `SELECT SUM(monto) FROM facturas WHERE pagada = true AND fecha >= ?`
-  - Cuotas pendientes: `SELECT SUM(monto) FROM facturas WHERE pagada = false`
-  - Nuevas altas: `SELECT COUNT(*) FROM socios WHERE created_at >= ?`
-- Grafico de evolucion: datos reales de facturas por mes
-- Pie chart: distribucion real por categoria
-
-### 2. Recursos conectado a BD
-**Archivo:** Crear `src/components/pages/RecursosDB.tsx`
-**Tabla:** `recursos` (ya existe con club_id)
-**Cambios:**
-- CRUD completo: listar, crear, editar, eliminar
-- Campos: nombre, tipo, precio_hora, descripcion, activo
-- Tipos: Cancha, Quincho, Salon, Pileta, Otro
-
-### 3. Reservas conectado a BD
-**Archivo:** Crear `src/components/pages/ReservasDB.tsx`
-**Tabla:** `reservas` (ya existe con club_id)
-**Cambios:**
-- Listar reservas del club
-- Crear reserva (seleccionar recurso, socio, fecha, hora)
-- Registrar sena
-- Calendario visual (opcional para beta)
-
-### 4. Tesoreria conectado a BD
-**Archivo:** Crear `src/components/pages/TesoreriaDB.tsx`
-**Tabla:** `facturas` (ya existe con club_id)
-**Cambios:**
-- Listar facturas pendientes y pagadas
-- Registrar pago de cuota
-- Generar factura para socio
-- Ver morosos
-- Grafico de flujo de caja real
-
-### 5. Config Bot WhatsApp en BD
-**Archivo:** `src/components/pages/WhatsApp.tsx`
-**Tabla:** `configuracion_bot` (ya existe con club_id)
-**Cambios:**
-- Guardar credenciales en BD (access_token, phone_number_id, verify_token)
-- Cargar configuracion al montar
-- Mensaje de bienvenida, horarios, CBU en BD
-
-### 6. Probar bot WhatsApp
-**Requisitos externos:**
-- Cuenta Meta for Developers
-- WhatsApp Business API aprobada
-- Numero de telefono verificado
-- Configurar webhook URL
+### Dia 4: WhatsApp Panel + Testing
+| Tarea | Detalle |
+|-------|---------|
+| WhatsAppDB | Leer conversaciones reales de `conversaciones_whatsapp` |
+| Mensajes | Ver historial de `mensajes_whatsapp` |
+| Testing | Flujo completo end-to-end |
 
 ---
 
-## Orden de Implementacion Sugerido
+## Bot WhatsApp (YA IMPLEMENTADO)
 
+### Codigo existente
 ```
-Dia 1: Dashboard + Recursos
-Dia 2: Reservas
-Dia 3: Tesoreria
-Dia 4: WhatsApp config + testing
+src/lib/whatsapp/
+├── client.ts    # Cliente Meta Cloud API
+├── bot.ts       # Logica conversacional
+└── types.ts     # Tipos TypeScript
+
+src/app/api/whatsapp/
+├── webhook/route.ts       # Recibe mensajes de Meta
+├── send/route.ts          # Envia mensajes
+├── conversations/route.ts # Lista conversaciones
+└── send-invoices/route.ts # Envio masivo facturas
 ```
 
-**Total estimado: 4 dias de desarrollo**
+### Flujos implementados
+- Menu principal (4 opciones)
+- Reservar cancha (seleccion recurso > fecha > hora > confirmacion)
+- Estado de cuenta (busca socio por telefono)
+- Solicitar factura (genera y envia)
+- Info del club (horarios, contacto, ubicacion, CBU)
+
+### Solo falta configuracion externa
+1. Cuenta Meta Business
+2. App WhatsApp en developers.facebook.com
+3. Variables de entorno:
+   - `WHATSAPP_ACCESS_TOKEN`
+   - `WHATSAPP_PHONE_NUMBER_ID`
+   - `WHATSAPP_VERIFY_TOKEN`
 
 ---
 
-## Checklist Pre-Beta
+## Tablas en Supabase (todas con club_id y RLS)
 
-- [ ] Dashboard muestra KPIs reales
-- [ ] Se pueden crear/editar recursos (canchas, quinchos)
-- [ ] Se pueden crear/gestionar reservas
-- [ ] Se pueden cobrar cuotas y ver facturas
-- [ ] Configuracion del bot guardada en BD
-- [ ] Bot responde mensajes basicos (requiere Meta)
-- [ ] Un admin puede:
-  - [ ] Registrarse y crear su club
-  - [ ] Cargar lista de socios
-  - [ ] Gestionar recursos
-  - [ ] Crear reservas
-  - [ ] Cobrar cuotas
-  - [ ] Ver dashboard con datos reales
+| Tabla | Campos clave |
+|-------|--------------|
+| clubs | nombre, direccion, cuit, telefono |
+| usuarios_club | email, nombre, rol, club_id |
+| socios | nombre, dni, telefono, categoria, estado, cuota_mensual |
+| categorias_socios | nombre, cuota_mensual, es_activo |
+| recursos | nombre, tipo, precio_hora, activo |
+| reservas | recurso_id, socio_id, fecha, hora_inicio, hora_fin, estado, sena |
+| facturas | socio_id, monto, concepto, estado, fecha_emision |
+| configuracion_bot | clave, valor |
+| conversaciones_whatsapp | telefono, socio_id, estado_flujo, contexto |
+| mensajes_whatsapp | conversacion_id, direccion, contenido, tipo |
 
 ---
 
-## Post-Beta (Mejoras)
+## Checklist Beta
 
-- Importar socios desde CSV
-- Calendario visual de reservas
-- Envio masivo de facturas por WhatsApp
-- Reportes exportables (PDF/Excel)
-- Notificaciones de morosidad automaticas
+### Funcionalidad core
+- [x] Registro y login de admin
+- [x] Wizard configuracion club
+- [x] CRUD socios
+- [x] Bot WhatsApp (codigo)
+- [ ] Dashboard con datos reales
+- [ ] CRUD recursos
+- [ ] CRUD reservas
+- [ ] CRUD facturas/tesoreria
+- [ ] Panel WhatsApp conectado
+
+### Configuracion externa
+- [ ] Cuenta Meta Business
+- [ ] App WhatsApp configurada
+- [ ] Webhook URL registrado
+- [ ] Variables de entorno en Vercel
+
+---
+
+## Resultado Beta
+
+Un club podra:
+1. Registrarse y configurar su club (nombre, direccion, etc)
+2. Cargar su lista de socios con categorias
+3. Crear canchas, quinchos, salones
+4. Gestionar reservas
+5. Cobrar cuotas y ver facturas
+6. Ver metricas reales en dashboard
+7. Ver conversaciones de WhatsApp en el panel
+8. (Con cuenta Meta) Bot respondiendo automaticamente a socios
+
+---
+
+## Estimacion total
+
+**4 dias de desarrollo** + configuracion cuenta Meta
