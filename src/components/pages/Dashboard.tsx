@@ -1,6 +1,6 @@
 'use client'
 
-import { Wallet, Users, TrendingUp, AlertTriangle, CalendarDays, RefreshCcw } from 'lucide-react'
+import { Wallet, Users, TrendingUp, AlertTriangle, CalendarDays } from 'lucide-react'
 import { useClub } from '@/hooks/useClub'
 import { useDashboardStats } from '@/hooks/useDashboardStats'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'

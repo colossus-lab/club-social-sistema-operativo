@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { LayoutDashboard, Users, CreditCard, Trophy, CalendarDays, Sun, Moon, MessageCircle, LogOut, Building2 } from 'lucide-react'
+import { LayoutDashboard, Users, CreditCard, CalendarDays, Sun, Moon, MessageCircle, LogOut, Building2 } from 'lucide-react'
 import { useClubStore } from '@/store/useClubStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useClub } from '@/hooks/useClub'
