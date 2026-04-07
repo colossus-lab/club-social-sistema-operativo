@@ -2,22 +2,22 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { LayoutDashboard, Users, CreditCard, Trophy, CalendarDays, Sun, Moon, MessageCircle, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, CreditCard, Trophy, CalendarDays, Sun, Moon, MessageCircle, LogOut, Building2 } from 'lucide-react'
 import { useClubStore } from '@/store/useClubStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useClub } from '@/hooks/useClub'
 import Dashboard from './pages/Dashboard'
 import SociosDB from './pages/SociosDB'
-import Tesoreria from './pages/Tesoreria'
-import Disciplinas from './pages/Disciplinas'
-import Reservas from './pages/Reservas'
-import WhatsApp from './pages/WhatsApp'
+import TesoreriaDB from './pages/TesoreriaDB'
+import RecursosDB from './pages/RecursosDB'
+import ReservasDB from './pages/ReservasDB'
+import WhatsAppDB from './pages/WhatsAppDB'
 
 const navItems = [
   { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { id: 'socios', icon: Users, label: 'Socios' },
-  { id: 'tesoreria', icon: CreditCard, label: 'Tesorería' },
-  { id: 'disciplinas', icon: Trophy, label: 'Deportes' },
+  { id: 'tesoreria', icon: CreditCard, label: 'Tesoreria' },
+  { id: 'recursos', icon: Building2, label: 'Recursos' },
   { id: 'reservas', icon: CalendarDays, label: 'Reservas' },
   { id: 'whatsapp', icon: MessageCircle, label: 'WhatsApp' },
 ]
@@ -149,13 +149,13 @@ export default function AppShell() {
       case 'socios':
         return <SociosDB />
       case 'tesoreria':
-        return <Tesoreria />
-      case 'disciplinas':
-        return <Disciplinas />
+        return <TesoreriaDB />
+      case 'recursos':
+        return <RecursosDB />
       case 'reservas':
-        return <Reservas />
+        return <ReservasDB />
       case 'whatsapp':
-        return <WhatsApp />
+        return <WhatsAppDB />
       default:
         return <Dashboard />
     }
